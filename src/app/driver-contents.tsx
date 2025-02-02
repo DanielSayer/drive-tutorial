@@ -1,17 +1,21 @@
+"use client";
+
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { buttonVariants } from "~/components/ui/button";
-import type { file_table, folder_table } from "~/server/db/schema";
+import type { FileEntity, FolderEntity } from "~/server/db/schema";
 import { FileRow } from "./file-row";
 import { FolderRow } from "./folder-row";
+import { UploadButton } from "~/components/uploadthing";
+import { useRouter } from "next/navigation";
 
 const ROOT_FOLDER_ID = 1;
 
 type DriveContentsProps = {
-  files: (typeof file_table.$inferSelect)[];
-  folders: (typeof folder_table.$inferSelect)[];
-  parents: (typeof folder_table.$inferSelect)[];
+  files: FileEntity[];
+  folders: FolderEntity[];
+  parents: FolderEntity[];
 };
 
 export default function DriveContents({
@@ -19,6 +23,8 @@ export default function DriveContents({
   folders,
   parents,
 }: DriveContentsProps) {
+  const navigate = useRouter();
+
   return (
     <div className="min-h-screen p-8">
       <div className="mx-auto max-w-6xl">
@@ -68,6 +74,12 @@ export default function DriveContents({
             ))}
           </ul>
         </div>
+        <UploadButton
+          endpoint="imageUploader"
+          onClientUploadComplete={() => {
+            navigate.refresh();
+          }}
+        />
       </div>
     </div>
   );

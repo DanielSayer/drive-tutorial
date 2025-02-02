@@ -1,9 +1,9 @@
 import { Folder as FolderIcon } from "lucide-react";
 import Link from "next/link";
-import type { folder_table } from "~/server/db/schema";
+import type { FolderEntity } from "~/server/db/schema";
 
 type FolderRowProps = {
-  folder: typeof folder_table.$inferSelect;
+  folder: FolderEntity;
 };
 
 export const FolderRow = ({ folder }: FolderRowProps) => {
@@ -16,7 +16,7 @@ export const FolderRow = ({ folder }: FolderRowProps) => {
         <div className="col-span-6 flex items-center">
           <Link
             href={`/f/${folder.id}`}
-            className="flex items-center gap-3 text-accent-foreground hover:text-secondary"
+            className="flex items-center gap-3 text-accent-foreground hover:text-primary"
           >
             <FolderIcon className="h-4 w-4" />
             {folder.name}

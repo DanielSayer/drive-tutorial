@@ -1,8 +1,8 @@
 import { FileIcon } from "lucide-react";
-import type { file_table } from "~/server/db/schema";
+import type { FileEntity } from "~/server/db/schema";
 
 type FileRowProps = {
-  file: typeof file_table.$inferSelect;
+  file: FileEntity;
 };
 
 export const FileRow = ({ file }: FileRowProps) => {
@@ -15,7 +15,7 @@ export const FileRow = ({ file }: FileRowProps) => {
         <div className="col-span-6 flex items-center">
           <a
             href={file.url}
-            className="flex items-center gap-3 text-accent-foreground hover:text-secondary"
+            className="flex items-center gap-3 text-accent-foreground hover:text-primary"
             target="_blank"
           >
             <FileIcon className="h-4 w-4" />
