@@ -1,8 +1,8 @@
 import { FileIcon } from "lucide-react";
-import type { files } from "~/server/db/schema";
+import type { file_table } from "~/server/db/schema";
 
 type FileRowProps = {
-  file: typeof files.$inferSelect;
+  file: typeof file_table.$inferSelect;
 };
 
 export const FileRow = ({ file }: FileRowProps) => {

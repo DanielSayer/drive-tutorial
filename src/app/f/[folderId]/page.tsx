@@ -2,8 +2,8 @@ import { eq } from "drizzle-orm";
 import { notFound } from "next/navigation";
 import { db } from "~/server/db";
 import {
-  files as filesSchema,
-  folders as foldersSchema,
+  file_table as filesSchema,
+  folder_table as foldersSchema,
 } from "~/server/db/schema";
 import DriveContents from "../../driver-contents";
 
