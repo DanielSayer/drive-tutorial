@@ -1,8 +1,7 @@
-"use client";
-
-import { ChevronRight, Upload } from "lucide-react";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
+import { ChevronRight } from "lucide-react";
 import Link from "next/link";
-import { Button, buttonVariants } from "~/components/ui/button";
+import { buttonVariants } from "~/components/ui/button";
 import type { file_table, folder_table } from "~/server/db/schema";
 import { FileRow } from "./file-row";
 import { FolderRow } from "./folder-row";
@@ -20,10 +19,6 @@ export default function DriveContents({
   folders,
   parents,
 }: DriveContentsProps) {
-  const handleUpload = () => {
-    alert("Upload functionality would be implemented here");
-  };
-
   return (
     <div className="min-h-screen p-8">
       <div className="mx-auto max-w-6xl">
@@ -47,10 +42,14 @@ export default function DriveContents({
               </div>
             ))}
           </div>
-          <Button onClick={handleUpload}>
-            <Upload className="mr-2 h-4 w-4" />
-            Upload
-          </Button>
+          <div>
+            <SignedOut>
+              <SignInButton />
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </div>
         </div>
         <div className="rounded-lg bg-muted shadow-xl">
           <div className="border-b border-muted-foreground px-6 py-4">

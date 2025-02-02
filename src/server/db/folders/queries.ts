@@ -5,11 +5,22 @@ import { folder_table } from "../schema";
 import { eq } from "drizzle-orm";
 
 export const FOLDER_QUERIES = {
-  getAllParentsOfFolder: function (folderId: number) {
-    return db
-      .select()
-      .from(folder_table)
-      .where(eq(folder_table.parentId, folderId));
+  getAllParentsOfFolder: async function (folderId: number) {
+    const parents = [];
+    let currentId: number | null = folderId;
+    while (currentId !== null) {
+      const folder = await db
+        .selectDistinct()
+        .from(folder_table)
+        .where(eq(folder_table.id, currentId));
+
+      if (!folder[0]) {
+        throw new Error("Parent folder not found");
+      }
+      parents.unshift(folder[0]);
+      currentId = folder[0].parentId;
+    }
+    return parents;
   },
   getFoldersInFolder: function (folderId: number) {
     return db
