@@ -1,9 +1,6 @@
 import { notFound } from "next/navigation";
-import { getFilesInFolder } from "~/server/db/files/queries";
-import {
-  getAllParentsOfFolder,
-  getFoldersInFolder,
-} from "~/server/db/folders/queries";
+import { FILE_QUERIES } from "~/server/db/files/queries";
+import { FOLDER_QUERIES } from "~/server/db/folders/queries";
 import DriveContents from "../../driver-contents";
 
 type PageParams = {
@@ -18,9 +15,9 @@ export default async function GoogleDriveClone(props: PageParams) {
     return notFound();
   }
 
-  const filesPromise = getFilesInFolder(folderId);
-  const foldersPromise = getFoldersInFolder(folderId);
-  const parentsPromise = getAllParentsOfFolder(folderId);
+  const filesPromise = FILE_QUERIES.getFilesInFolder(folderId);
+  const foldersPromise = FOLDER_QUERIES.getFoldersInFolder(folderId);
+  const parentsPromise = FOLDER_QUERIES.getAllParentsOfFolder(folderId);
 
   const [files, folders, parents] = await Promise.all([
     filesPromise,
