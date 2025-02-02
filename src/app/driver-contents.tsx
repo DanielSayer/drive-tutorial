@@ -12,11 +12,14 @@ const ROOT_FOLDER_ID = 1;
 type DriveContentsProps = {
   files: (typeof files.$inferSelect)[];
   folders: (typeof folders.$inferSelect)[];
+  parents: (typeof folders.$inferSelect)[];
 };
 
-export default function DriveContents({ files, folders }: DriveContentsProps) {
-  const breadcrumbs: { id: string; name: string }[] = [];
-
+export default function DriveContents({
+  files,
+  folders,
+  parents,
+}: DriveContentsProps) {
   const handleUpload = () => {
     alert("Upload functionality would be implemented here");
   };
@@ -32,7 +35,7 @@ export default function DriveContents({ files, folders }: DriveContentsProps) {
             >
               My Drive
             </Link>
-            {breadcrumbs.map((folder) => (
+            {parents.map((folder) => (
               <div key={folder.id} className="flex items-center">
                 <ChevronRight className="mx-2 h-4 w-4 text-muted-foreground" />
                 <Link
