@@ -1,8 +1,8 @@
 import { Folder as FolderIcon } from "lucide-react";
-import type { Folder } from "../lib/mock-data";
+import type { folders } from "~/server/db/schema";
 
 type FolderRowProps = {
-  folder: Folder;
+  folder: typeof folders.$inferSelect;
   handleFolderClick: () => void;
 };
 
