@@ -1,7 +1,8 @@
 import {
-  int,
-  text,
+  bigint,
+  index,
   singlestoreTableCreator,
+  text,
 } from "drizzle-orm/singlestore-core";
 
 /**
@@ -11,11 +12,35 @@ import {
  * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
  */
 export const createTable = singlestoreTableCreator(
-  (name: string) => `drive_tutorial_${name}`,
+  (name) => `drive_tutorial_${name}`,
 );
 
-export const users = createTable("users_table", {
-  id: int("id").primaryKey().autoincrement(),
-  name: text("name"),
-  age: int("age"),
-});
+export const files = createTable(
+  "files",
+  {
+    id: bigint("id", { mode: "number", unsigned: true })
+      .primaryKey()
+      .autoincrement(),
+    name: text("name").notNull(),
+    size: text("size").notNull(),
+    url: text("url").notNull(),
+    parentId: bigint("parentId", { mode: "number", unsigned: true }).notNull(),
+  },
+  (t) => {
+    return [index("parent_index").on(t.parentId)];
+  },
+);
+
+export const folders = createTable(
+  "folders",
+  {
+    id: bigint("id", { mode: "number", unsigned: true })
+      .primaryKey()
+      .autoincrement(),
+    name: text("name").notNull(),
+    parentId: bigint("parentId", { mode: "number", unsigned: true }),
+  },
+  (t) => {
+    return [index("parent_index").on(t.parentId)];
+  },
+);
