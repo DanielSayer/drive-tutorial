@@ -1,8 +1,7 @@
-import "server-only";
-
 import {
   bigint,
   index,
+  int,
   singlestoreTableCreator,
   text,
 } from "drizzle-orm/singlestore-core";
@@ -24,7 +23,7 @@ export const files = createTable(
       .primaryKey()
       .autoincrement(),
     name: text("name").notNull(),
-    size: text("size").notNull(),
+    size: int("size").notNull(),
     url: text("url").notNull(),
     parentId: bigint("parentId", { mode: "number", unsigned: true }).notNull(),
   },
