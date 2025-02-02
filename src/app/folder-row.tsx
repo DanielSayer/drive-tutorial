@@ -1,12 +1,12 @@
 import { Folder as FolderIcon } from "lucide-react";
+import Link from "next/link";
 import type { folders } from "~/server/db/schema";
 
 type FolderRowProps = {
   folder: typeof folders.$inferSelect;
-  handleFolderClick: () => void;
 };
 
-export const FolderRow = ({ folder, handleFolderClick }: FolderRowProps) => {
+export const FolderRow = ({ folder }: FolderRowProps) => {
   return (
     <li
       key={folder.id}
@@ -14,13 +14,13 @@ export const FolderRow = ({ folder, handleFolderClick }: FolderRowProps) => {
     >
       <div className="grid grid-cols-12 items-center gap-4">
         <div className="col-span-6 flex items-center">
-          <button
-            onClick={handleFolderClick}
+          <Link
+            href={`/f/${folder.id}`}
             className="flex items-center gap-3 text-accent-foreground hover:text-secondary"
           >
             <FolderIcon className="h-4 w-4" />
             {folder.name}
-          </button>
+          </Link>
         </div>
         <div className="col-span-3 text-muted-foreground">Folder</div>
         <div className="col-span-3 text-muted-foreground">--</div>
