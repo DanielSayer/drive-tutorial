@@ -10,8 +10,6 @@ import type { FileEntity, FolderEntity } from "~/server/db/schema";
 import { FileRow } from "./file-row";
 import { FolderRow } from "./folder-row";
 
-const ROOT_FOLDER_ID = 1;
-
 type DriveContentsProps = {
   files: FileEntity[];
   folders: FolderEntity[];
@@ -32,10 +30,7 @@ export default function DriveContents({
       <div className="mx-auto max-w-6xl">
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center">
-            <Link
-              href={`/f/${ROOT_FOLDER_ID}`}
-              className={buttonVariants({ variant: "ghost" })}
-            >
+            <Link href={`/`} className={buttonVariants({ variant: "ghost" })}>
               My Drive
             </Link>
             {parents.map((folder) => (
@@ -77,7 +72,7 @@ export default function DriveContents({
           </ul>
         </div>
         <UploadButton
-          endpoint="imageUploader"
+          endpoint="driveUploader"
           input={{ folderId: currentFolderId }}
           onClientUploadComplete={() => {
             navigate.refresh();
