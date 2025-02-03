@@ -1,10 +1,15 @@
 import type { ReactNode } from "react";
 import { ClerkProvider } from "@clerk/nextjs";
+import { PostHogProvider } from "./post-hog";
 
 type ProvidersProps = {
   children: ReactNode;
 };
 
 export const Providers = ({ children }: ProvidersProps) => {
-  return <ClerkProvider>{children}</ClerkProvider>;
+  return (
+    <ClerkProvider>
+      <PostHogProvider>{children}</PostHogProvider>
+    </ClerkProvider>
+  );
 };

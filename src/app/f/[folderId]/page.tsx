@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { FILE_QUERIES } from "~/server/db/files/queries";
 import { FOLDER_QUERIES } from "~/server/db/folders/queries";
-import DriveContents from "../../driver-contents";
+import DriveContents from "./driver-contents";
 
 type PageParams = {
   params: Promise<{ folderId: string }>;

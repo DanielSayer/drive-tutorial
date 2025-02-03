@@ -14,10 +14,10 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <Providers>
-      <html lang="en" className={`dark ${GeistSans.variable}`}>
-        <body>{children}</body>
-      </html>
-    </Providers>
+    <html lang="en" className={`dark ${GeistSans.variable}`}>
+      <body>
+        <Providers>{children}</Providers>
+      </body>
+    </html>
   );
 }
