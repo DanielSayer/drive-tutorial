@@ -1,7 +1,9 @@
 import { auth } from "@clerk/nextjs/server";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
+import { z } from "zod";
 import { FILE_MUTATIONS } from "~/server/db/files/mutations";
+import { FOLDER_QUERIES } from "~/server/db/folders/queries";
 
 const f = createUploadthing();
 
@@ -18,17 +20,36 @@ export const ourFileRouter = {
       maxFileCount: 1,
     },
   })
+    .input(
+      z.object({
+        folderId: z.number(),
+      }),
+    )
     // Set permissions and file types for this FileRoute
-    .middleware(async () => {
+    .middleware(async ({ input }) => {
       // This code runs on your server before upload
       const user = await auth();
 
       // If you throw, the user will not be able to upload
-      // eslint-disable-next-line @typescript-eslint/only-throw-error
-      if (!user.userId) throw new UploadThingError("Unauthorized");
+      if (!user.userId) {
+        // eslint-disable-next-line @typescript-eslint/only-throw-error
+        throw new UploadThingError("Unauthorized");
+      }
+
+      const folder = await FOLDER_QUERIES.getFolder(input.folderId);
+
+      if (!folder) {
+        // eslint-disable-next-line @typescript-eslint/only-throw-error
+        throw new UploadThingError("Invalid folder");
+      }
+
+      if (folder.ownerId !== user.userId) {
+        // eslint-disable-next-line @typescript-eslint/only-throw-error
+        throw new UploadThingError("Unauthorized");
+      }
 
       // Whatever is returned here is accessible in onUploadComplete as `metadata`
-      return { userId: user.userId };
+      return { userId: user.userId, parentId: folder.id };
     })
     .onUploadComplete(async ({ metadata, file }) => {
       // This code RUNS ON YOUR SERVER after upload
@@ -39,6 +60,7 @@ export const ourFileRouter = {
         name: file.name,
         size: file.size,
         url: file.url,
+        parentId: metadata.parentId,
       });
 
       return { uploadedBy: metadata.userId };

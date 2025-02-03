@@ -4,6 +4,7 @@ import {
   int,
   singlestoreTableCreator,
   text,
+  timestamp,
 } from "drizzle-orm/singlestore-core";
 
 /**
@@ -22,13 +23,18 @@ export const file_table = createTable(
     id: bigint("id", { mode: "number", unsigned: true })
       .primaryKey()
       .autoincrement(),
+    ownerId: text("ownerId").notNull(),
     name: text("name").notNull(),
     size: int("size").notNull(),
     url: text("url").notNull(),
     parentId: bigint("parentId", { mode: "number", unsigned: true }).notNull(),
+    createdAt: timestamp("createdAt").notNull().defaultNow(),
   },
   (t) => {
-    return [index("parent_index").on(t.parentId)];
+    return [
+      index("parent_index").on(t.parentId),
+      index("owner_index").on(t.ownerId),
+    ];
   },
 );
 export type FileEntity = typeof file_table.$inferSelect;
@@ -39,11 +45,16 @@ export const folder_table = createTable(
     id: bigint("id", { mode: "number", unsigned: true })
       .primaryKey()
       .autoincrement(),
+    ownerId: text("ownerId").notNull(),
     name: text("name").notNull(),
     parentId: bigint("parentId", { mode: "number", unsigned: true }),
+    createdAt: timestamp("createdAt").notNull().defaultNow(),
   },
   (t) => {
-    return [index("parent_index").on(t.parentId)];
+    return [
+      index("parent_index").on(t.parentId),
+      index("owner_index").on(t.ownerId),
+    ];
   },
 );
 export type FolderEntity = typeof folder_table.$inferSelect;

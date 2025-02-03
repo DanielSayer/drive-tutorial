@@ -25,5 +25,12 @@ export default async function GoogleDriveClone(props: PageParams) {
     parentsPromise,
   ]);
 
-  return <DriveContents files={files} folders={folders} parents={parents} />;
+  return (
+    <DriveContents
+      files={files}
+      folders={folders}
+      parents={parents}
+      currentFolderId={folderId}
+    />
+  );
 }

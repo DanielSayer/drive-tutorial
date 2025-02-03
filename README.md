@@ -5,4 +5,4 @@
 - [x] Set up database and data model
 - [x] Move folder open state to URL
 - [x] Add authentication
-- [ ] Add upload functionality
+- [x] Add upload functionality

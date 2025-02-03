@@ -3,12 +3,12 @@
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { buttonVariants } from "~/components/ui/button";
+import { UploadButton } from "~/components/uploadthing";
 import type { FileEntity, FolderEntity } from "~/server/db/schema";
 import { FileRow } from "./file-row";
 import { FolderRow } from "./folder-row";
-import { UploadButton } from "~/components/uploadthing";
-import { useRouter } from "next/navigation";
 
 const ROOT_FOLDER_ID = 1;
 
@@ -16,12 +16,14 @@ type DriveContentsProps = {
   files: FileEntity[];
   folders: FolderEntity[];
   parents: FolderEntity[];
+  currentFolderId: number;
 };
 
 export default function DriveContents({
   files,
   folders,
   parents,
+  currentFolderId,
 }: DriveContentsProps) {
   const navigate = useRouter();
 
@@ -76,6 +78,7 @@ export default function DriveContents({
         </div>
         <UploadButton
           endpoint="imageUploader"
+          input={{ folderId: currentFolderId }}
           onClientUploadComplete={() => {
             navigate.refresh();
           }}

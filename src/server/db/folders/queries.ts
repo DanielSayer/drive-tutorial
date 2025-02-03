@@ -1,8 +1,8 @@
 import "server-only";
 
+import { eq } from "drizzle-orm";
 import { db } from "..";
 import { folder_table } from "../schema";
-import { eq } from "drizzle-orm";
 
 export const FOLDER_QUERIES = {
   getAllParentsOfFolder: async function (folderId: number) {
@@ -27,5 +27,12 @@ export const FOLDER_QUERIES = {
       .select()
       .from(folder_table)
       .where(eq(folder_table.parentId, folderId));
+  },
+  getFolder: async function (folderId: number) {
+    const folder = await db
+      .select()
+      .from(folder_table)
+      .where(eq(folder_table.id, folderId));
+    return folder[0];
   },
 };
