@@ -1,6 +1,6 @@
 import "server-only";
 
-import { eq } from "drizzle-orm";
+import { eq, asc } from "drizzle-orm";
 import { db } from "..";
 import { folder_table } from "../schema";
 
@@ -26,7 +26,8 @@ export const FOLDER_QUERIES = {
     return db
       .select()
       .from(folder_table)
-      .where(eq(folder_table.parentId, folderId));
+      .where(eq(folder_table.parentId, folderId))
+      .orderBy(asc(folder_table.name));
   },
   getFolder: async function (folderId: number) {
     const folder = await db
