@@ -26,9 +26,13 @@ export const file_table = createTable(
     ownerId: text("ownerId").notNull(),
     name: text("name").notNull(),
     size: int("size").notNull(),
-    url: text("url").notNull(),
     parentId: bigint("parentId", { mode: "number", unsigned: true }).notNull(),
     createdAt: timestamp("createdAt").notNull().defaultNow(),
+
+    // From UT
+    url: text("url").notNull(),
+    key: text("key").notNull(),
+    type: text("type").notNull(),
   },
   (t) => {
     return [

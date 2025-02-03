@@ -23,7 +23,8 @@ export const FolderRow = ({ folder }: FolderRowProps) => {
           </Link>
         </div>
         <div className="col-span-3 text-muted-foreground">Folder</div>
-        <div className="col-span-3 text-muted-foreground">--</div>
+        <div className="col-span-2 text-muted-foreground">--</div>
+        <div className="col-span-1"></div>
       </div>
     </li>
   );

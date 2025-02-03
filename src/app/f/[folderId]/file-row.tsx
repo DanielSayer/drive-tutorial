@@ -1,5 +1,6 @@
 import { FileIcon } from "lucide-react";
 import type { FileEntity } from "~/server/db/schema";
+import { FileActionsMenu } from "./file-actions-menu";
 
 type FileRowProps = {
   file: FileEntity;
@@ -22,8 +23,11 @@ export const FileRow = ({ file }: FileRowProps) => {
             {file.name}
           </a>
         </div>
-        <div className="col-span-3 text-muted-foreground">File</div>
-        <div className="col-span-3 text-muted-foreground">{file.size}</div>
+        <div className="col-span-3 text-muted-foreground">{file.type}</div>
+        <div className="col-span-2 text-muted-foreground">{file.size}</div>
+        <div className="col-span-1 flex items-center justify-end">
+          <FileActionsMenu fileId={file.id} />
+        </div>
       </div>
     </li>
   );
