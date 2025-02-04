@@ -5,10 +5,10 @@ import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { buttonVariants } from "~/components/ui/button";
+import { DataTable } from "~/components/ui/data-table";
 import { UploadButton } from "~/components/uploadthing";
 import type { FileEntity, FolderEntity } from "~/server/db/schema";
-import { FileRow } from "./file-row";
-import { FolderRow } from "./folder-row";
+import { columns } from "./columns";
 
 type DriveContentsProps = {
   files: FileEntity[];
@@ -54,24 +54,22 @@ export default function DriveContents({
             </SignedIn>
           </div>
         </div>
-        <div className="rounded-lg bg-muted shadow-xl">
-          <div className="border-b border-muted-foreground px-6 py-4">
-            <div className="grid grid-cols-12 gap-4 text-sm font-medium text-muted-foreground">
-              <div className="col-span-6">Name</div>
-              <div className="col-span-3">Type</div>
-              <div className="col-span-2">Size</div>
-              <div className="col-span-1"></div>
-            </div>
-          </div>
-          <ul>
-            {folders.map((folder) => (
-              <FolderRow key={folder.id} folder={folder} />
-            ))}
-            {files.map((file) => (
-              <FileRow key={file.id} file={file} />
-            ))}
-          </ul>
-        </div>
+        <DataTable
+          columns={columns}
+          data={[
+            ...folders.map((folder) => ({
+              id: folder.id,
+              name: folder.name,
+              type: "Folder",
+            })),
+            ...files.map((file) => ({
+              id: file.id,
+              name: file.name,
+              type: file.type,
+              size: file.size,
+            })),
+          ]}
+        />
         <UploadButton
           endpoint="driveUploader"
           input={{ folderId: currentFolderId }}
