@@ -1,6 +1,5 @@
 "use client";
 
-import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -30,12 +29,11 @@ export default function DriveContents({
       <div className="mx-auto max-w-6xl">
         <div className="mb-6 flex items-center justify-between">
           <div className="flex items-center">
-            <Link href={`/`} className={buttonVariants({ variant: "ghost" })}>
-              My Drive
-            </Link>
-            {parents.map((folder) => (
+            {parents.map((folder, i) => (
               <div key={folder.id} className="flex items-center">
-                <ChevronRight className="mx-2 h-4 w-4 text-muted-foreground" />
+                {i > 0 && (
+                  <ChevronRight className="mx-2 h-4 w-4 text-muted-foreground" />
+                )}
                 <Link
                   href={`/f/${folder.id}`}
                   className={buttonVariants({ variant: "ghost" })}
@@ -45,14 +43,14 @@ export default function DriveContents({
               </div>
             ))}
           </div>
-          <div>
-            <SignedOut>
-              <SignInButton />
-            </SignedOut>
-            <SignedIn>
-              <UserButton />
-            </SignedIn>
-          </div>
+          <UploadButton
+            endpoint="driveUploader"
+            className="ut-allowed-content:hidden"
+            input={{ folderId: currentFolderId }}
+            onClientUploadComplete={() => {
+              navigate.refresh();
+            }}
+          />
         </div>
         <DataTable
           columns={columns}
@@ -66,16 +64,12 @@ export default function DriveContents({
               id: file.id,
               name: file.name,
               type: file.type,
-              size: file.size,
+              fileData: {
+                url: file.url,
+                size: file.size,
+              },
             })),
           ]}
-        />
-        <UploadButton
-          endpoint="driveUploader"
-          input={{ folderId: currentFolderId }}
-          onClientUploadComplete={() => {
-            navigate.refresh();
-          }}
         />
       </div>
     </div>

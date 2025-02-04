@@ -3,6 +3,7 @@ import "~/styles/globals.css";
 import { GeistSans } from "geist/font/sans";
 import { type Metadata } from "next";
 import { Providers } from "~/components/providers";
+import { TopNav } from "~/components/top-nav";
 
 export const metadata: Metadata = {
   title: "Drive Tutorial",
@@ -16,7 +17,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={`dark ${GeistSans.variable}`}>
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <TopNav />
+          {children}
+        </Providers>
       </body>
     </html>
   );

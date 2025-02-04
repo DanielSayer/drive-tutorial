@@ -4,17 +4,28 @@ import type { ColumnDef } from "@tanstack/react-table";
 import { formatBytes } from "~/lib/utils";
 import { FileActionsMenu } from "./file-actions-menu";
 import { Button } from "~/components/ui/button";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowUpDown, FileIcon, FolderIcon } from "lucide-react";
+import Link from "next/link";
 
-type DriveData = {
+type DriveFile = {
   id: number;
   name: string;
   type: string;
-  size?: number;
+  fileData: {
+    url: string;
+    size: number;
+  };
 };
 
-function isFileRow(row: DriveData) {
-  return "size" in row;
+type DriveFolder = {
+  id: number;
+  name: string;
+  type: string;
+};
+type DriveData = DriveFile | DriveFolder;
+
+function isFileRow(row: DriveData): row is DriveFile {
+  return "fileData" in row;
 }
 
 export const columns: ColumnDef<DriveData>[] = [
@@ -29,8 +40,18 @@ export const columns: ColumnDef<DriveData>[] = [
       );
     },
     cell: ({ row }) => {
+      const originalRow = row.original;
       return (
-        <div className="flex h-9 items-center">{row.getValue("name")}</div>
+        <div className="flex h-9 items-center">
+          {isFileRow(originalRow) ? (
+            <FileTitleCell
+              url={originalRow.fileData.url}
+              name={originalRow.name}
+            />
+          ) : (
+            <FolderTitleCell id={originalRow.id} name={originalRow.name} />
+          )}
+        </div>
       );
     },
     sortingFn: "text",
@@ -50,9 +71,9 @@ export const columns: ColumnDef<DriveData>[] = [
       );
     },
     cell: ({ row }) => {
-      const size = row.getValue<number | undefined>("size");
-      if (size) {
-        return <div>{formatBytes(size)}</div>;
+      const originalRow = row.original;
+      if (isFileRow(originalRow)) {
+        return <div>{formatBytes(originalRow.fileData.size)}</div>;
       }
     },
   },
@@ -70,3 +91,28 @@ export const columns: ColumnDef<DriveData>[] = [
     },
   },
 ];
+
+const FolderTitleCell = (props: { id: number; name: string }) => {
+  return (
+    <Link
+      href={`/f/${props.id}`}
+      className="flex items-center gap-3 text-accent-foreground hover:text-primary"
+    >
+      <FolderIcon className="h-4 w-4" />
+      {props.name}
+    </Link>
+  );
+};
+
+const FileTitleCell = (props: { url: string; name: string }) => {
+  return (
+    <a
+      href={props.url}
+      className="flex items-center gap-3 text-accent-foreground hover:text-primary"
+      target="_blank"
+    >
+      <FileIcon className="h-4 w-4" />
+      {props.name}
+    </a>
+  );
+};
