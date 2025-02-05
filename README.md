@@ -1,8 +1,8 @@
 # Drive Tutorial
 
-## TODO
+This was created off a YT tutorial by [Theo](https://www.youtube.com/watch?v=c-hKSbzooAg&t=3s) and has been extended with the following features:
 
-- [x] Set up database and data model
-- [x] Move folder open state to URL
-- [x] Add authentication
-- [x] Add upload functionality
+- Top Nav
+- Improved Loading UX
+- File Deletion feedback
+- Add sorting to drive
