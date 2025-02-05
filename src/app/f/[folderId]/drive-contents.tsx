@@ -25,53 +25,54 @@ export default function DriveContents({
   const navigate = useRouter();
 
   return (
-    <div className="min-h-screen p-8">
-      <div className="mx-auto max-w-6xl">
-        <div className="mb-6 flex items-center justify-between">
-          <div className="flex items-center">
-            {parents.map((folder, i) => (
-              <div key={folder.id} className="flex items-center">
-                {i > 0 && (
-                  <ChevronRight className="mx-2 h-4 w-4 text-muted-foreground" />
-                )}
-                <Link
-                  href={`/f/${folder.id}`}
-                  className={buttonVariants({ variant: "ghost" })}
-                >
-                  {folder.name}
-                </Link>
-              </div>
-            ))}
-          </div>
-          <UploadButton
-            endpoint="driveUploader"
-            className="ut-allowed-content:hidden"
-            input={{ folderId: currentFolderId }}
-            onClientUploadComplete={() => {
-              navigate.refresh();
-            }}
-          />
+    <>
+      <div className="mb-6 flex items-center justify-between">
+        <div className="flex items-center">
+          {parents.map((folder, i) => (
+            <div key={folder.id} className="flex items-center">
+              {i > 0 && (
+                <ChevronRight className="mx-2 h-4 w-4 text-muted-foreground" />
+              )}
+              <Link
+                href={`/f/${folder.id}`}
+                className={buttonVariants({ variant: "ghost" })}
+              >
+                {folder.name}
+              </Link>
+            </div>
+          ))}
         </div>
-        <DataTable
-          columns={columns}
-          data={[
-            ...folders.map((folder) => ({
-              id: folder.id,
-              name: folder.name,
-              type: "Folder",
-            })),
-            ...files.map((file) => ({
-              id: file.id,
-              name: file.name,
-              type: file.type,
-              fileData: {
-                url: file.url,
-                size: file.size,
-              },
-            })),
-          ]}
+        <UploadButton
+          endpoint="driveUploader"
+          className="ut-allowed-content:hidden"
+          input={{ folderId: currentFolderId }}
+          onClientUploadComplete={() => {
+            navigate.refresh();
+          }}
+          appearance={{
+            button: buttonVariants(),
+          }}
         />
       </div>
-    </div>
+      <DataTable
+        columns={columns}
+        data={[
+          ...folders.map((folder) => ({
+            id: folder.id,
+            name: folder.name,
+            type: "Folder",
+          })),
+          ...files.map((file) => ({
+            id: file.id,
+            name: file.name,
+            type: file.type,
+            fileData: {
+              url: file.url,
+              size: file.size,
+            },
+          })),
+        ]}
+      />
+    </>
   );
 }

@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import { FOLDER_QUERIES } from "~/server/db/folders/queries";
 import { CreateDriveForm } from "./create-drive-form";
+import Redirect from "./redirect";
 
 export default async function Page() {
   const session = await auth();
@@ -12,7 +13,8 @@ export default async function Page() {
 
   const rootFolder = await FOLDER_QUERIES.getRootFolder(session.userId);
   if (rootFolder?.id) {
-    return redirect(`/f/${rootFolder.id}`);
+    // For whatever reason, the redirect function is very slow and it gets stuck with nothing on the UI
+    return <Redirect url={`/f/${rootFolder.id}`} />;
   }
 
   return (
