@@ -76,6 +76,15 @@ export const columns: ColumnDef<DriveData>[] = [
         return <div>{formatBytes(originalRow.fileData.size)}</div>;
       }
     },
+    sortingFn: (row1, row2) => {
+      const originalRow1 = row1.original;
+      const originalRow2 = row2.original;
+
+      if (isFileRow(originalRow1) && isFileRow(originalRow2)) {
+        return originalRow1.fileData.size - originalRow2.fileData.size;
+      }
+      return -1;
+    },
   },
   {
     accessorKey: "action",
