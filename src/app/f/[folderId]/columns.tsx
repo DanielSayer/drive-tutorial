@@ -91,11 +91,7 @@ export const columns: ColumnDef<DriveData>[] = [
     header: "",
     cell: ({ row }) => {
       if (isFileRow(row.original)) {
-        return (
-          <div className="flex h-9 items-center justify-end">
-            <FileActionsMenu fileId={row.original.id} />
-          </div>
-        );
+        return <FileActionsMenu fileId={row.original.id} />;
       }
     },
   },
