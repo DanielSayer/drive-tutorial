@@ -36,16 +36,14 @@ export const ourFileRouter = {
         throw new UploadThingError("Unauthorized");
       }
 
-      const folder = await FOLDER_QUERIES.getFolder(input.folderId);
+      const folder = await FOLDER_QUERIES.getFolder(
+        input.folderId,
+        user.userId,
+      );
 
       if (!folder) {
         // eslint-disable-next-line @typescript-eslint/only-throw-error
         throw new UploadThingError("Invalid folder");
-      }
-
-      if (folder.ownerId !== user.userId) {
-        // eslint-disable-next-line @typescript-eslint/only-throw-error
-        throw new UploadThingError("Unauthorized");
       }
 
       // Whatever is returned here is accessible in onUploadComplete as `metadata`
